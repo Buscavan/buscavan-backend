@@ -22,14 +22,19 @@ model User {
   cpf       String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  veiculos Veiculo[]
+  viagens   Viagem[] @relation("UserViagens")
 }
 
 model Veiculo {
   id       String   @id @default(cuid())
   placa     String   @unique
-  capacidade String 
+  capacidade Int 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  motorista User @relation(fields: [motoristaId], references: [id])
+  motoristaId String
+  viagens     Viagem[]
 }
 
 model Viagem {
@@ -40,4 +45,8 @@ model Viagem {
   dataFinal   DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  veiculo     Veiculo @relation(fields: [veiculoId], references: [id])
+  veiculoId   String
+  usuario     User @relation(fields: [usuarioId], references: [id], name: "UserViagens")
+  usuarioId   String
 }
