@@ -15,7 +15,7 @@ datasource db {
 
 
 model User {
-  id        String   @id @default(cuid())
+  id        Int   @id @default(autoincrement())
   email     String   @unique
   name      String
   password  String
@@ -27,18 +27,18 @@ model User {
 }
 
 model Veiculo {
-  id       String   @id @default(cuid())
+  id       Int   @id @default(autoincrement())
   placa     String   @unique
   capacidade Int 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   motorista User @relation(fields: [motoristaId], references: [id])
-  motoristaId String
+  motoristaId Int
   viagens     Viagem[]
 }
 
 model Viagem {
-  id        String   @id @default(cuid())
+  id        Int   @id @default(autoincrement())
   origem      String
   destino     String
   dataInicial DateTime
@@ -46,7 +46,7 @@ model Viagem {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   veiculo     Veiculo @relation(fields: [veiculoId], references: [id])
-  veiculoId   String
+  veiculoId   Int
   usuario     User @relation(fields: [usuarioId], references: [id], name: "UserViagens")
-  usuarioId   String
+  usuarioId   Int
 }
