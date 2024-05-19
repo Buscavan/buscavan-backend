@@ -1,6 +1,6 @@
-# Nome da Aplicação
+# Buscavan
 
-Breve descrição do que a aplicação faz.
+Documentação para rodar a aplicação
 
 ## Índice
 
