@@ -24,8 +24,17 @@ export class UsersService {
   }
   async updateUser(id: string, data: UpdateUserDto) {
     const user = await prisma.user.update({
-      where: { id: id },
+      where: { id:  id},
       data: data,
+    });
+    return user;
+  }
+
+  async findByName(name: string) {
+    const user = await prisma.user.findFirst({
+      where: {
+        name: name
+      },
     });
     return user;
   }
