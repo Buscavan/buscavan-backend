@@ -24,7 +24,7 @@ export class UsersService {
   }
   async updateUser(id: string, data: UpdateUserDto) {
     const user = await prisma.user.update({
-      where: { id: id },
+      where: { id: parseInt(id) },
       data: data,
     });
     return user;
