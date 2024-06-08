@@ -10,9 +10,9 @@ export class AuthController {
 
    @Post('login')
    async signIn(
-      @Body('name') name: string,
+      @Body('cpf') cpf: string,
       @Body('password') password: string
    ) : Promise<AuthResponseDto> {
-      return this.authService.signIn(name, password)
+      return this.authService.signIn(cpf, password)
    }
 }

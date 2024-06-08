@@ -30,10 +30,10 @@ export class UsersService {
     return user;
   }
 
-  async findByName(name: string) {
+  async findByCpf(cpf: string) {
     const user = await prisma.user.findFirst({
       where: {
-        name: name
+        cpf: cpf
       },
     });
     return user;
