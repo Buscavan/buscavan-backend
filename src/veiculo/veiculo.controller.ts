@@ -17,15 +17,9 @@ export class VeiculoController {
   createVeiculo(@Body() dto: CreateVeiculoDto) {
     return this.veiculosService.createVeiculo(dto);
   }
-
-  @Get()
-  getVeiculos() {
-    return this.veiculosService.getVeiculo();
-  }
-
   @Get(':id')
-  oneGetVeiculo(@Param('id') id: number) {
-    return this.veiculosService.oneGetVeiculo(id);
+  findAllbyMotoristaId(@Param('id') id: string) {
+    return this.veiculosService.findAllbyMotoristaId(id);
   }
 
   @Delete(':id')

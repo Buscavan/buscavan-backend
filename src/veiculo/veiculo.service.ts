@@ -17,14 +17,6 @@ export class VeiculoService {
     });
     return veiculo;
   }
-  async getVeiculo() {
-    const veiculo = await prisma.veiculo.findMany();
-    return veiculo;
-  }
-  async oneGetVeiculo(id: number) {
-    const oneVeiculo = await prisma.veiculo.findUnique({ where: { id: id } });
-    return oneVeiculo;
-  }
   async deleteVeiculo(id: number) {
     const veiculo = await prisma.veiculo.delete({
       where: {
@@ -46,5 +38,11 @@ export class VeiculoService {
       console.error('Erro ao atualizar veículo:', error);
       throw error;
     }
+  }
+  async findAllbyMotoristaId(idMotorista: string) {
+    const veiculos = await prisma.veiculo.findMany({
+      where: { motoristaId: parseInt(idMotorista) },
+    });
+    return veiculos;
   }
 }
