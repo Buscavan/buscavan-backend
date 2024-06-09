@@ -6,6 +6,10 @@ import { compareSync as bcryptCompareSync } from 'bcrypt';
 import { AuthResponseDto } from './auth.dto';
 import { ConfigService } from '@nestjs/config';
 import { LoginUserDto } from 'src/users/dtos/login-user.dto';
+import { CreateUserDto } from 'src/users/dtos/create-user.dto';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 @Injectable()
 export class AuthService {
@@ -39,4 +43,18 @@ export class AuthService {
 
     return { token, expiresIn: this.jwtExpirationTimeInSec, id };
   }
+
+  async createUser(dto: CreateUserDto): Promise<CreateUserDto> {
+   const user = await prisma.user.create({ data: dto });
+
+   const payload = { sub: user.id, name: user.name };
+
+   const token = this.jwtService.sign(payload);
+   
+   const expiresin = this.jwtExpirationTimeInSec;
+
+   const dtoUser = {token, expiresin, ...user}
+
+   return dtoUser;
+ }
 }
