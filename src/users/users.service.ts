@@ -24,8 +24,17 @@ export class UsersService {
   }
   async updateUser(id: string, data: UpdateUserDto) {
     const user = await prisma.user.update({
-      where: { id: parseInt(id) },
+      where: { id: id },
       data: data,
+    });
+    return user;
+  }
+
+  async findByCpf(cpf: string) {
+    const user = await prisma.user.findFirst({
+      where: {
+        cpf: cpf
+      },
     });
     return user;
   }
