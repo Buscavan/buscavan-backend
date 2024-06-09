@@ -1,13 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsString } from 'class-validator';
 
-export class GetVeiculoDto {
+export class PutVeiculoDto {
   @ApiProperty()
   @IsString()
-  placa: string;
+  placa?: string;
+  @ApiProperty()
   @IsNumber()
-  capacidade: number;
-  motorista: {
-    name: string;
-  };
+  capacidade?: number;
+  @ApiProperty()
+  @IsNumber()
+  motoristaid?: number;
 }

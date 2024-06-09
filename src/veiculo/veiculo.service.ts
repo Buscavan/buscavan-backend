@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateVeiculoDto } from './dtos/create-veiculo.dto';
 import { PrismaClient } from '@prisma/client';
+import { PutVeiculoDto } from './dtos/put-veiculo.dto';
 
 const prisma = new PrismaClient();
 
@@ -32,10 +33,7 @@ export class VeiculoService {
     });
     return veiculo;
   }
-  async updateVeiculo(
-    id: number,
-    data: { placa?: string; capacidade?: number; motoristaId?: number },
-  ) {
+  async updateVeiculo(id: number, data: PutVeiculoDto) {
     try {
       const updatedVeiculo = await prisma.veiculo.update({
         where: {
