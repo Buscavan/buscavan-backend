@@ -1,4 +1,3 @@
-version: '3.5'
 services:
   db:
     image: postgres:latest
@@ -10,4 +9,4 @@ services:
     ports:
       - '5433:5432'
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./sql-scripts/:/docker-entrypoint-initdb.d/

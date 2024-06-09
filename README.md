@@ -33,7 +33,7 @@ Instale as dependências do projeto usando npm
 npm install
 ```
 
-## Docker
+## Configuração
 
 Você deve rodar o docker para a criação do banco de dados:
 
@@ -41,9 +41,7 @@ Você deve rodar o docker para a criação do banco de dados:
 docker compose up -d
 ```
 
-Obs: Se você não quiser usar o docker dever criar um banco de dados na sua maquina e alterar o '.env' para rodar o projeto
-
-## Configuração
+Obs: O docker somente é para rodar o container do **banco de dados**
 
 Crie um arquivo '.env' na raiz do projeto e adicione as variáveis de ambiente necessárias:
 
