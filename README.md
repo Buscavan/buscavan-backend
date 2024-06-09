@@ -57,10 +57,10 @@ Após criar o '.env' deve rodas a migrations para poder executar o projeto:
 npx prisma migrate dev --name init
 ```
 
-Se quiser ver os dados inseridos no banco pode-se usar o prisma client:
+Se quiser ver os dados inseridos no banco pode-se usar o prisma studio:
 
 ```bash
-npx prisma client
+npx prisma studio
 ```
 
 ## Execução
