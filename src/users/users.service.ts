@@ -38,4 +38,10 @@ export class UsersService {
     });
     return user;
   }
+
+  async getUsers() {
+    const users = await prisma.user.findMany();
+    return users;
+  }
+
 }

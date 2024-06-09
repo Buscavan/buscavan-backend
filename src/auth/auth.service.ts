@@ -31,7 +31,8 @@ export class AuthService {
 
     const foundUser = await this.usersService.findByCpf(cpf);
 
-    if (!foundUser || !bcryptCompareSync(password, foundUser.password)) {
+   //  if (!foundUser || !bcryptCompareSync(password, foundUser.password)) {
+      if ((!foundUser) || (password !== foundUser.password)){
       throw new UnauthorizedException();
     }
 
