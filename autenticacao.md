@@ -22,15 +22,15 @@ Registro de novos usuário no sistema.
 {% code fullWidth="false" %}
 ```json
 {
-    "id": number;
-    "email": string;
-    "name": string;
-    "password": string;
-    "cpf": string;
-    "createdAt": Date;
-    "updatedAt": Date;
-    "token": string;
-    "expiresin": number;
+    "id": number,
+    "email": string,
+    "name": string,
+    "password": string,
+    "cpf": string,
+    "createdAt": Date,
+    "updatedAt": Date,
+    "token": string,
+    "expiresin": number
 }
 ```
 {% endcode %}
@@ -58,9 +58,9 @@ Login de usuários já cadastrados.
 {% tab title="200" %}
 ```json
 {
-   "token": string;
-   "expiresIn": number;
-   "id": number;
+   "token": string,
+   "expiresIn": number,
+   "id": number
 }
 
 
@@ -95,13 +95,13 @@ Altera os dados de um usuário através de seu Id.
 {% tab title="200" %}
 ```json
 {
-    "id": number;
-    "email": string;
-    "name": string;
-    "password": string;
-    "cpf": string;
-    "createdAt": Date;
-    "updatedAt": Date;
+    "id": number,
+    "email": string,
+    "name": string,
+    "password": string,
+    "cpf": string,
+    "createdAt": Date,
+    "updatedAt": Date
 }
 ```
 {% endtab %}
@@ -128,13 +128,13 @@ Retorna todos os usuários cadastrados.
 ```json
 [
     {
-        "id": number;
-        "email": string;
-        "name": string;
-        "password": string;
-        "cpf": string;
-        "createdAt": Date;
-        "updatedAt": Date;
+        "id": number,
+        "email": string,
+        "name": string,
+        "password": string,
+        "cpf": string,
+        "createdAt": Date,
+        "updatedAt": Date
     }
 ]
 ```
