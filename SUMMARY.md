@@ -2,4 +2,5 @@
 
 * [Buscavan](README.md)
 * [Rodando a API](rodando-a-api.md)
-* [Autenticação](autenticacao.md)
+* [Usuário](usuario.md)
+* [Page 1](page-1.md)
