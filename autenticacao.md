@@ -1,4 +1,10 @@
+---
+description: Requests relacionadas aos usuários.
+---
+
 # Usuário
+
+***
 
 ## Registro de novo usuário
 
