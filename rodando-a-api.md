@@ -24,8 +24,8 @@ Antes de começar, certifique-se de ter os seguintes softwares instalados em sua
 Clone o repositório do Github para sua máquina local:
 
 ```bash
-git clone https://github.com/usuario/nome-do-repositorio.git
-cd nome-do-repositorio
+git clone https://github.com/Buscavan/back-end.git
+cd back-end
 ```
 
 Instale as dependências do projeto usando npm install:
