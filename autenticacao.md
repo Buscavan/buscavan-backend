@@ -139,12 +139,4 @@ Retorna todos os usuários cadastrados.
 ]
 ```
 {% endtab %}
-
-{% tab title="400" %}
-```json
-{
-  "error": "Invalid request"
-}
-```
-{% endtab %}
 {% endtabs %}
