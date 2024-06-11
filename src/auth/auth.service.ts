@@ -40,9 +40,10 @@ export class AuthService {
 
     const token = this.jwtService.sign(payload);
 
-    const id = foundUser.id;
+    // const id = foundUser.id;
+    const user = foundUser
 
-    return { token, expiresIn: this.jwtExpirationTimeInSec, id };
+    return { token, expiresIn: this.jwtExpirationTimeInSec, user };
   }
 
   async createUser(dto: CreateUserDto): Promise<CreateUserDto> {
