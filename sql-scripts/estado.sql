@@ -15,10 +15,6 @@ CREATE TABLE estado (
   CONSTRAINT estado_pkey
     PRIMARY KEY (id)
 );
-
-COMMENT ON TABLE estado
-  IS 'Unidades Federativas';
-
 --
 -- Inserindo dados na tabela "estado"
 --

@@ -43,5 +43,4 @@ export class UsersService {
     const users = await prisma.user.findMany();
     return users;
   }
-
 }

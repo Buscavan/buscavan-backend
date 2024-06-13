@@ -4,7 +4,7 @@ services:
     hostname: db
     environment:
       - POSTGRES_PASSWORD=123
-      - POSTGRES_USER=admin
+      - POSTGRES_USER=user
       - POSTGRES_DB=buscavan
     ports:
       - '5433:5432'
