@@ -6,10 +6,13 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { VeiculoService } from './veiculo.service';
 import { CreateVeiculoDto } from './dtos/create-veiculo.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('veiculo')
 export class VeiculoController {
   constructor(private veiculosService: VeiculoService) {}
