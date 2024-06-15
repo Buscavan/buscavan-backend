@@ -32,33 +32,41 @@ model Veiculo {
 }
 
 model Viagem {
-  id        Int   @id @default(autoincrement())
-  origem      String
-  destino     String
-  dataInicial DateTime
-  dataFinal   DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  veiculo     Veiculo @relation(fields: [veiculoId], references: [id])
-  veiculoId   Int
-  usuario     User @relation(fields: [usuarioId], references: [id], name: "UserViagens")
-  usuarioId   Int
+  id           Int     @id @default(autoincrement())
+  origemId     Int
+  origem       Cidade  @relation("Origem", fields: [origemId], references: [id])
+  destinoId    Int
+  destino      Cidade  @relation("Destino", fields: [destinoId], references: [id])
+  dataInicial  DateTime
+  dataFinal    DateTime
+  valor        Float
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  veiculo      Veiculo @relation(fields: [veiculoId], references: [id])
+  veiculoId    Int
+  usuario      User    @relation(fields: [usuarioId], references: [id], name: "UserViagens")
+  usuarioId    Int
 }
 
-model cidade {
-  id      BigInt  @id @default(autoincrement()) @map("id")
+
+model Cidade {
+  id      Int    @id  @default(autoincrement())
   nome    String? @map("nome") @db.VarChar(120)
   uf      Int?    @map("uf")
   ibge    Int?    @map("ibge")
   lat_lon String? @map("lat_lon") @db.VarChar(200)
   cod_tom Int?    @default(0) @map("cod_tom") @db.SmallInt
+  estado  Estado? @relation(fields: [uf], references: [id], name: "EstadoCidade")
+  viagemDestino Viagem[] @relation("Destino")
+  viagemOrigem Viagem[] @relation("Origem")
 }
 
-model estado {
-  id   BigInt  @id @default(autoincrement()) @map("id")
-  nome String? @map("nome") @db.VarChar(60)
-  uf   String? @map("uf") @db.VarChar(2)
-  ibge Int?    @map("ibge")
-  pais Int?    @map("pais")
-  ddd  Json?   @map("ddd") @db.Json
+model Estado {
+  id       Int      @id @default(autoincrement())
+  nome     String?  @map("nome") @db.VarChar(60)
+  uf       String?  @map("uf") @db.VarChar(2)
+  ibge     Int?     @map("ibge")
+  pais     Int?     @map("pais")
+  ddd      Json?    @map("ddd") @db.Json
+  cidades  Cidade[] @relation(name: "EstadoCidade")
 }

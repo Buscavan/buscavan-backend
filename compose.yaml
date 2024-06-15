@@ -8,5 +8,3 @@ services:
       - POSTGRES_DB=buscavan
     ports:
       - '5433:5432'
-    volumes:
-      - ./sql-scripts/:/docker-entrypoint-initdb.d/

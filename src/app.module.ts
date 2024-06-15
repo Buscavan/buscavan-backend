@@ -6,12 +6,17 @@ import { ViagemService } from './viagem/viagem.service';
 import { ViagemModule } from './viagem/viagem.module';
 import { VeiculoModule } from './veiculo/veiculo.module';
 import { AuthModule } from './auth/auth.module';
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModule } from '@nestjs/config';
+import { CidadesModule } from './cidades/cidades.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal:true}),
-    UsersModule, ViagemModule, VeiculoModule, AuthModule
+    ConfigModule.forRoot({ isGlobal: true }),
+    UsersModule,
+    ViagemModule,
+    VeiculoModule,
+    AuthModule,
+    CidadesModule,
   ],
   controllers: [ViagemController],
   providers: [UsersService, ViagemService],

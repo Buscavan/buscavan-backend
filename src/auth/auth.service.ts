@@ -2,7 +2,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
-import { compareSync as bcryptCompareSync } from 'bcrypt';
 import { AuthResponseDto } from './auth.dto';
 import { ConfigService } from '@nestjs/config';
 import { LoginUserDto } from 'src/users/dtos/login-user.dto';
@@ -31,8 +30,8 @@ export class AuthService {
 
     const foundUser = await this.usersService.findByCpf(cpf);
 
-   //  if (!foundUser || !bcryptCompareSync(password, foundUser.password)) {
-      if ((!foundUser) || (password !== foundUser.password)){
+    //  if (!foundUser || !bcryptCompareSync(password, foundUser.password)) {
+    if (!foundUser || password !== foundUser.password) {
       throw new UnauthorizedException();
     }
 
@@ -41,22 +40,22 @@ export class AuthService {
     const token = this.jwtService.sign(payload);
 
     // const id = foundUser.id;
-    const user = foundUser
+    const user = foundUser;
 
     return { token, expiresIn: this.jwtExpirationTimeInSec, user };
   }
 
   async createUser(dto: CreateUserDto): Promise<CreateUserDto> {
-   const user = await prisma.user.create({ data: dto });
+    const user = await prisma.user.create({ data: dto });
 
-   const payload = { sub: user.id, name: user.name };
+    const payload = { sub: user.id, name: user.name };
 
-   const token = this.jwtService.sign(payload);
-   
-   const expiresin = this.jwtExpirationTimeInSec;
+    const token = this.jwtService.sign(payload);
 
-   const dtoUser = {token, expiresin, ...user}
+    const expiresin = this.jwtExpirationTimeInSec;
 
-   return dtoUser;
- }
+    const dtoUser = { token, expiresin, ...user };
+
+    return dtoUser;
+  }
 }
