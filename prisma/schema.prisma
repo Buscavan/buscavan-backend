@@ -7,26 +7,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id        Int   @id @default(autoincrement())
-  email     String   @unique
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
   name      String
   password  String
-  cpf       String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  veiculos Veiculo[]
-  viagens   Viagem[] @relation("UserViagens")
+  cpf       String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  veiculos  Veiculo[]
+  viagens   Viagem[]  @relation("UserViagens")
 }
 
 model Veiculo {
-  id       Int   @id @default(autoincrement())
-  placa     String   @unique
-  capacidade Int 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  motorista User @relation(fields: [motoristaId], references: [id])
+  id          Int      @id @default(autoincrement())
+  placa       String   @unique
+  capacidade  Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  motorista   User     @relation(fields: [motoristaId], references: [id])
   motoristaId Int
   viagens     Viagem[]
 }
