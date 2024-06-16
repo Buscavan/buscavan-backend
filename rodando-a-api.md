@@ -6,18 +6,18 @@ description: Documentação para rodar a aplicação localmente.
 
 ## Índice
 
-* [Requisitos](rodando-a-api.md#requisitos)
-* [Clonando o repositório](rodando-a-api.md#clonando-o-repositorio)
-* [Configuração do banco de dados](rodando-a-api.md#configuracao-do-banco-de-dados)
-* [Iniciando a API](rodando-a-api.md#iniciando-a-api)
+- [Requisitos](rodando-a-api.md#requisitos)
+- [Clonando o repositório](rodando-a-api.md#clonando-o-repositorio)
+- [Configuração do banco de dados](rodando-a-api.md#configuracao-do-banco-de-dados)
+- [Iniciando a API](rodando-a-api.md#iniciando-a-api)
 
 ## Requisitos
 
 Antes de começar, certifique-se de ter os seguintes softwares instalados em sua máquina:
 
-* [Node](https://nodejs.org/en)
-* [Docker](https://www.docker.com/)
-* [Docker Compose](https://docs.docker.com/compose/)
+- [Node](https://nodejs.org/en)
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
 ## Clonando o repositório
 
@@ -51,7 +51,7 @@ Crie um arquivo '.env' na raiz do projeto e adicione as variáveis de ambiente n
 ````bash
 ```properties
 DATABASE_URL="postgresql://admin:123@localhost:5433/buscavan"
-JWT_SECRET=md9q347890qnbf8owbno 
+JWT_SECRET=md9q347890qnbf8owbno
 JWT_EXPIRATION_TIME=600
 ```
 ````
@@ -60,6 +60,12 @@ Após criar o '.env', rodar as migrations para criar as tabelas no banco:
 
 ```bash
 npx prisma migrate dev --name init
+```
+
+Com as tabelas criadas no banco de dados deve rodar o script de população de cidades e estados:
+
+```bash
+npm run population
 ```
 
 Se quiser ver os dados inseridos no banco pode-se usar o prisma studio:
