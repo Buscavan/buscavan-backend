@@ -8,6 +8,7 @@ import { VeiculoModule } from './veiculo/veiculo.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { CidadesModule } from './cidades/cidades.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { CidadesModule } from './cidades/cidades.module';
     VeiculoModule,
     AuthModule,
     CidadesModule,
+    UploadModule,
   ],
   controllers: [ViagemController],
   providers: [UsersService, ViagemService],

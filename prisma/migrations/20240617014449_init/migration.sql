@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "fotoCnhUrl" DROP NOT NULL,
+ALTER COLUMN "fotoMotoristaUrl" DROP NOT NULL,
+ALTER COLUMN "fotoPassageiroUrl" DROP NOT NULL;

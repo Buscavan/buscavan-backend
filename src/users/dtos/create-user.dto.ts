@@ -27,4 +27,7 @@ export class CreateUserDto {
     message: 'Password is too long',
   })
   password: string;
+  fotoMotoristaUrl: string;
+  fotoCnhUrl: string;
+  fotoPassageiroUrl: string;
 }

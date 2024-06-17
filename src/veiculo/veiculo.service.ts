@@ -9,11 +9,7 @@ const prisma = new PrismaClient();
 export class VeiculoService {
   async createVeiculo(dto: CreateVeiculoDto) {
     const veiculo = await prisma.veiculo.create({
-      data: {
-        placa: dto.placa,
-        capacidade: dto.capacidade,
-        motoristaId: dto.motoristaid,
-      },
+      data: dto,
     });
     return veiculo;
   }
