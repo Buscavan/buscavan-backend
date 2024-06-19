@@ -1,11 +1,10 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users/users.service';
 import { AuthResponseDto } from './auth.dto';
 import { ConfigService } from '@nestjs/config';
-import { LoginUserDto } from 'src/users/dtos/login-user.dto';
-import { CreateUserDto } from 'src/users/dtos/create-user.dto';
+import { LoginUserDto } from 'src/auth/dtos/login-user.dto';
+import { CreateUserDto } from 'src/auth/dtos/create-user.dto';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -15,7 +14,6 @@ export class AuthService {
   private jwtExpirationTimeInSec: number;
 
   constructor(
-    private usersService: UsersService,
     private jwtService: JwtService,
     private configService: ConfigService,
   ) {
@@ -28,7 +26,9 @@ export class AuthService {
     const cpf = login.cpf;
     const password = login.password;
 
-    const foundUser = await this.usersService.findByCpf(cpf);
+    const foundUser = await prisma.user.findUnique({
+      where: { cpf: cpf },
+    });
 
     //  if (!foundUser || !bcryptCompareSync(password, foundUser.password)) {
     if (!foundUser || password !== foundUser.password) {
@@ -46,6 +46,22 @@ export class AuthService {
   }
 
   async createUser(dto: CreateUserDto): Promise<CreateUserDto> {
+    const existingCpf = await prisma.user.findUnique({
+      where: { cpf: dto.cpf },
+    });
+
+    const existingEmail = await prisma.user.findUnique({
+      where: { cpf: dto.cpf },
+    });
+
+    if (existingEmail) {
+      throw new Error('Email já cadastrado');
+    }
+
+    if (existingCpf) {
+      throw new Error('CPF já cadastrado');
+    }
+
     const user = await prisma.user.create({ data: dto });
 
     const payload = { sub: user.id, name: user.name };
