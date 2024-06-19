@@ -11,9 +11,13 @@ import {
 import { VeiculoService } from './veiculo.service';
 import { CreateVeiculoDto } from './dtos/create-veiculo.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { RolesGuard } from 'src/auth/roles/roles.guard';
+import { Roles } from 'src/auth/roles/roles.decorator';
+import { Role } from 'src/auth/roles/roles.type';
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RolesGuard)
 @Controller('veiculo')
+@Roles(Role.driver)
 export class VeiculoController {
   constructor(private veiculosService: VeiculoService) {}
   @Post('/create')
@@ -29,7 +33,6 @@ export class VeiculoController {
   deleteVeiculo(@Param('id') id: number) {
     return this.veiculosService.deleteVeiculo(id);
   }
-
   @Put(':id')
   updateVeiculo(
     @Param('id') id: number,
