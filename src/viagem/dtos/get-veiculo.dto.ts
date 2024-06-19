@@ -1,4 +1,16 @@
-import { IsDate, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsDate,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+
+export enum TipoViagem {
+  IDA,
+  IDAVOLTA,
+}
+
 export class GetViagemDto {
   origem: {
     nome: string;
@@ -9,17 +21,21 @@ export class GetViagemDto {
     uf: string;
   };
   @IsDate()
-  dataInicial: Date;
+  dataIda: Date;
   @IsDate()
-  dataFinal: Date;
+  dataVolta: Date;
+  @IsString()
+  localEmbarqueIda: string;
+  @IsString()
+  localEmbarqueVolta: string;
   @IsNumber()
   valor: number;
   @IsDate()
   createdAt: Date;
   veiculo: {
-    capacidade: number;
     modelo: string;
-    foto: string;
+    placa: string;
+    capacidade: number;
   };
   @IsOptional()
   comentario: {
@@ -28,4 +44,9 @@ export class GetViagemDto {
     author: string;
     createdAt: Date;
   };
+  @IsEnum(TipoViagem)
+  tipo: TipoViagem;
+  @IsOptional()
+  @IsString()
+  descricao: string;
 }
