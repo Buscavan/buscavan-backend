@@ -9,7 +9,11 @@ export class CidadesController {
     return this.cidadesService.getEstado();
   }
   @Get(':id')
-  findAllCidadesByUf(@Param('id') id: string) {
-    return this.cidadesService.getCidadesbyIdEstado(id);
+  findAllCidadesByUf(
+    @Param('id') id: string,
+    @Param('page') page: number = 1,
+    @Param('limit') limit: number = 10,
+  ) {
+    return this.cidadesService.getCidadesbyIdEstado(id, page, limit);
   }
 }
