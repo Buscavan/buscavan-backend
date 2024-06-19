@@ -18,6 +18,7 @@ model User {
   fotoPassageiroUrl String? @unique
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  role Role
   veiculos  Veiculo[]
   viagens   Viagem[]  @relation("UserViagens")
 }
@@ -88,4 +89,9 @@ model Estado {
   pais    Int?     @map("pais")
   ddd     Json?    @map("ddd") @db.Json
   cidades Cidade[] @relation(name: "EstadoCidade")
+}
+
+enum Role {
+  DRIVER
+  PASSANGER
 }
