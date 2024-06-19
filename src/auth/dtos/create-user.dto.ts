@@ -26,8 +26,8 @@ export class CreateUserDto {
     message: 'A senha é muito longa',
   })
   password: string;
-  fotoMotoristaUrl: string;
   fotoCnhUrl: string;
-  fotoPassageiroUrl: string;
+  fotoPerfilUrl: string;
   role: Role;
+  celular: string;
 }

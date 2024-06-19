@@ -25,7 +25,7 @@ export class UploadController {
     },
   });
 
-  @Post('/user/passageiro/:id')
+  @Post('/user/perfil/:id')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFileUser(@UploadedFile() file: FileDTO, @Param('id') id: number) {
     const result = await this.uploadService.upload(file);
@@ -40,10 +40,9 @@ export class UploadController {
     await prisma.user.update({
       where: { id: Number(id) },
       data: {
-        fotoPassageiroUrl: data.signedUrl,
+        fotoPerfilUrl: data.signedUrl,
       },
     });
-
     return result;
   }
 
@@ -54,42 +53,15 @@ export class UploadController {
     const { data, error } = await this.supabase.storage
       .from('buscavan')
       .createSignedUrl(file.originalname, 3155760000);
-
     if (error) {
       throw new Error(`Erro ao criar URL assinada: ${error.message}`);
     }
-
     await prisma.user.update({
       where: { id: Number(id) },
       data: {
         fotoCnhUrl: data.signedUrl,
       },
     });
-
-    return result;
-  }
-
-  @Post('/user/motorista/:id')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadFileMotorista(
-    @UploadedFile() file: FileDTO,
-    @Param('id') id: number,
-  ) {
-    const result = await this.uploadService.upload(file);
-    const { data, error } = await this.supabase.storage
-      .from('buscavan')
-      .createSignedUrl(file.originalname, 3155760000);
-
-    if (error) {
-      throw new Error(`Erro ao criar URL assinada: ${error.message}`);
-    }
-    await prisma.user.update({
-      where: { id: Number(id) },
-      data: {
-        fotoMotoristaUrl: data.signedUrl,
-      },
-    });
-
     return result;
   }
 

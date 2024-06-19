@@ -13,13 +13,14 @@ import { CreateVeiculoDto } from './dtos/create-veiculo.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/auth/roles/roles.guard';
 import { Roles } from 'src/auth/roles/roles.decorator';
-import { Role } from 'src/auth/roles/roles.type';
+import { Role } from '@prisma/client';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Controller('veiculo')
-@Roles(Role.driver)
 export class VeiculoController {
   constructor(private veiculosService: VeiculoService) {}
+
+  @Roles(Role.DRIVER)
   @Post('/create')
   createVeiculo(@Body() dto: CreateVeiculoDto) {
     return this.veiculosService.createVeiculo(dto);

@@ -10,6 +10,8 @@ import { UploadModule } from './upload/upload.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/roles/roles.guard';
 import { AuthGuard } from './auth/auth.guard';
+import { VeiculoService } from './veiculo/veiculo.service';
+import { VeiculoController } from './veiculo/veiculo.controller';
 
 @Module({
   imports: [
@@ -20,9 +22,9 @@ import { AuthGuard } from './auth/auth.guard';
     CidadesModule,
     UploadModule,
   ],
-  controllers: [ViagemController],
+  controllers: [VeiculoController, ViagemController],
   providers: [
-    ViagemService,
+    VeiculoService,
     ViagemService,
     {
       provide: APP_GUARD,

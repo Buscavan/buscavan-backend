@@ -9,6 +9,4 @@ export class CreateVeiculoDto {
   motoristaId: number;
   @IsString()
   modelo: string;
-  @IsString()
-  fotoVeiculoUrl: string;
 }
