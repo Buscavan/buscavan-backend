@@ -8,52 +8,52 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  name      String
-  password  String
-  cpf       String    @unique
-  fotoMotoristaUrl String? @unique
-  fotoCnhUrl String? @unique
-  fotoPassageiroUrl String? @unique
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  role Role
-  veiculos  Veiculo[]
-  viagens   Viagem[]  @relation("UserViagens")
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  name          String
+  password      String
+  cpf           String    @unique
+  celular       String    @unique
+  fotoPerfilUrl String?   @unique
+  fotoCnhUrl    String?   @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  role          Role
+  veiculos      Veiculo[]
+  viagens       Viagem[]  @relation("UserViagens")
 }
 
 model Veiculo {
-  id          Int      @id @default(autoincrement())
-  modelo      String   
-  placa       String   @unique
-  capacidade  Int
-  fotoVeiculoUrl   String    @unique 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  motorista   User     @relation(fields: [motoristaId], references: [id])
-  motoristaId Int
-  viagens     Viagem[]
+  id             Int      @id @default(autoincrement())
+  modelo         String
+  placa          String   @unique
+  capacidade     Int
+  fotoVeiculoUrl String?  @unique
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  motorista      User     @relation(fields: [motoristaId], references: [id])
+  motoristaId    Int
+  viagens        Viagem[]
 }
 
 model Viagem {
-  id           Int      @id @default(autoincrement())
-  origemId     Int
-  origem       Cidade   @relation("Origem", fields: [origemId], references: [id])
-  destinoId    Int
-  destino      Cidade   @relation("Destino", fields: [destinoId], references: [id])
-  dataInicial  DateTime
-  dataFinal    DateTime
-  valor        Float
-  fotoDestinoUrl String @unique
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  veiculo      Veiculo  @relation(fields: [veiculoId], references: [id])
-  veiculoId    Int
-  usuario      User     @relation(fields: [usuarioId], references: [id], name: "UserViagens")
-  usuarioId    Int
-  comentario   Comment? @relation(fields: [comentarioId], references: [id], name: "ViagemComment")
-  comentarioId Int?
+  id             Int      @id @default(autoincrement())
+  origemId       Int
+  origem         Cidade   @relation("Origem", fields: [origemId], references: [id])
+  destinoId      Int
+  destino        Cidade   @relation("Destino", fields: [destinoId], references: [id])
+  dataInicial    DateTime
+  dataFinal      DateTime
+  valor          Float
+  fotoDestinoUrl String?  @unique
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  veiculo        Veiculo  @relation(fields: [veiculoId], references: [id])
+  veiculoId      Int
+  usuario        User     @relation(fields: [usuarioId], references: [id], name: "UserViagens")
+  usuarioId      Int
+  comentario     Comment? @relation(fields: [comentarioId], references: [id], name: "ViagemComment")
+  comentarioId   Int?
 }
 
 model Comment {

@@ -30,19 +30,19 @@ export class AuthService {
       where: { cpf: cpf },
     });
 
-    //  if (!foundUser || !bcryptCompareSync(password, foundUser.password)) {
     if (!foundUser || password !== foundUser.password) {
       throw new UnauthorizedException();
     }
 
-    const payload = { sub: foundUser.id, name: foundUser.name };
+    const payload = {
+      sub: foundUser.id,
+      name: foundUser.name,
+      role: foundUser.role,
+    };
 
     const token = this.jwtService.sign(payload);
 
-    // const id = foundUser.id;
-    const user = foundUser;
-
-    return { token, expiresIn: this.jwtExpirationTimeInSec, user };
+    return { token, expiresIn: this.jwtExpirationTimeInSec, user: foundUser };
   }
 
   async createUser(dto: CreateUserDto): Promise<CreateUserDto> {
@@ -64,7 +64,7 @@ export class AuthService {
 
     const user = await prisma.user.create({ data: dto });
 
-    const payload = { sub: user.id, name: user.name };
+    const payload = { sub: user.id, name: user.name, role: user.role };
 
     const token = this.jwtService.sign(payload);
 
