@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { UsersService } from './users/users.service';
-import { UsersModule } from './users/users.module';
 import { ViagemController } from './viagem/viagem.controller';
 import { ViagemService } from './viagem/viagem.service';
 import { ViagemModule } from './viagem/viagem.module';
@@ -9,11 +7,13 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { CidadesModule } from './cidades/cidades.module';
 import { UploadModule } from './upload/upload.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './auth/roles/roles.guard';
+import { AuthGuard } from './auth/auth.guard';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    UsersModule,
     ViagemModule,
     VeiculoModule,
     AuthModule,
@@ -21,6 +21,14 @@ import { UploadModule } from './upload/upload.module';
     UploadModule,
   ],
   controllers: [ViagemController],
-  providers: [UsersService, ViagemService],
+  providers: [
+    ViagemService,
+    ViagemService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    { provide: APP_GUARD, useClass: RolesGuard },
+  ],
 })
 export class AppModule {}
