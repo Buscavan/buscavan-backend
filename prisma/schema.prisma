@@ -8,11 +8,11 @@ datasource db {
 }
 
 model User {
-  cpf           String    @unique @id
+  cpf           String    @id @unique
   email         String    @unique
   name          String
   password      String
-  phone       Int?    @unique
+  phone         Int?      @unique
   fotoPerfilUrl String?   @unique
   fotoCnhUrl    String?   @unique
   createdAt     DateTime  @default(now())
@@ -31,39 +31,45 @@ model Veiculo {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
   motorista      User     @relation(fields: [motoristaCPF], references: [cpf])
-  motoristaCPF    String
+  motoristaCPF   String
   viagens        Viagem[]
 }
 
 model Viagem {
-  id             Int      @id @default(autoincrement())
-  origemId       Int
-  origem         Cidade   @relation("Origem", fields: [origemId], references: [id])
-  destinoId      Int
-  destino        Cidade   @relation("Destino", fields: [destinoId], references: [id])
-  dataInicial    DateTime
-  dataFinal      DateTime
-  valor          Float
-  fotoDestinoUrl String?  @unique
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  veiculo        Veiculo  @relation(fields: [veiculoId], references: [id])
-  veiculoId      Int
-  usuario        User     @relation(fields: [usuarioId], references: [cpf], name: "UserViagens")
-  usuarioId      String
-  comentario     Comment? @relation(fields: [comentarioId], references: [id], name: "ViagemComment")
-  comentarioId   Int?
+  id                 Int       @id @default(autoincrement())
+  origemId           Int
+  origem             Cidade    @relation("Origem", fields: [origemId], references: [id])
+  destinoId          Int
+  destino            Cidade    @relation("Destino", fields: [destinoId], references: [id])
+  dataInicial        DateTime
+  dataFinal          DateTime
+  valor              Float
+  localEmbarqueIda   String
+  localEmbarqueVolta String
+  descricao          String
+  fotoDestinoUrl     String?   @unique
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  veiculo            Veiculo   @relation(fields: [veiculoId], references: [id])
+  veiculoId          Int
+  usuario            User      @relation(fields: [usuarioId], references: [cpf], name: "UserViagens")
+  usuarioId          String
+  comentarios        Comment[] @relation("ViagemComments")
+  //comentario     Comment? @relation(fields: [comentarioId], references: [id], name: "ViagemComment")
+  //comentarioId   Int?
 }
 
+// comentários atualizados para poder ser adicionado + de 1 e receber resposta
 model Comment {
   id              Int       @id @default(autoincrement())
   content         String
   author          String
   createdAt       DateTime  @default(now())
+  viagem          Viagem    @relation("ViagemComments", fields: [viagemId], references: [id])
+  viagemId        Int
   parentComment   Comment?  @relation("CommentReplies", fields: [parentCommentId], references: [id])
   parentCommentId Int?
   replies         Comment[] @relation("CommentReplies")
-  viagem          Viagem[]  @relation("ViagemComment")
 
   @@index([parentCommentId])
 }
