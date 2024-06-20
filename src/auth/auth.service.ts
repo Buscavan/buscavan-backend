@@ -1,11 +1,17 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthResponseDto } from './auth.dto';
 import { ConfigService } from '@nestjs/config';
 import { LoginUserDto } from 'src/auth/dtos/login-user.dto';
 import { CreateUserDto } from 'src/auth/dtos/create-user.dto';
 import { PrismaClient } from '@prisma/client';
+import { AlterUserDto } from './dtos/alter-user.dto';
 
 const prisma = new PrismaClient();
 
@@ -55,11 +61,11 @@ export class AuthService {
     });
 
     if (existingEmail) {
-      throw new Error('Email já cadastrado');
+      throw new HttpException('Email já cadastrado', HttpStatus.CONFLICT);
     }
 
     if (existingCpf) {
-      throw new Error('CPF já cadastrado');
+      throw new HttpException('CPF já cadastrado', HttpStatus.CONFLICT);
     }
 
     const user = await prisma.user.create({ data: dto });
@@ -73,5 +79,19 @@ export class AuthService {
     const dtoUser = { token, expiresin, ...user };
 
     return dtoUser;
+  }
+  async alterUser(dto: AlterUserDto, cpf: string) {
+    try {
+      const user = await prisma.user.update({
+        where: { cpf: cpf },
+        data: dto,
+      });
+      return user;
+    } catch (error) {
+      throw new HttpException(
+        'Erro ao atualizar usuário',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
