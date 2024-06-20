@@ -28,7 +28,10 @@ export class UploadController {
 
   @Post('/user/perfil/:id')
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFileUser(@UploadedFile() file: FileDTO, @Param('id') id: number) {
+  async uploadFileUser(
+    @UploadedFile() file: FileDTO,
+    @Param('id') cpf: string,
+  ) {
     let uuid;
     let uniqueFilename;
 
@@ -55,7 +58,7 @@ export class UploadController {
     }
 
     await prisma.user.update({
-      where: { id: Number(id) },
+      where: { cpf: cpf },
       data: {
         fotoPerfilUrl: data.signedUrl,
       },
@@ -65,7 +68,7 @@ export class UploadController {
 
   @Post('/user/cnh/:id')
   @UseInterceptors(FileInterceptor('file'))
-  async uploadFileCnh(@UploadedFile() file: FileDTO, @Param('id') id: number) {
+  async uploadFileCnh(@UploadedFile() file: FileDTO, @Param('id') cpf: string) {
     let uuid;
     let uniqueFilename;
 
@@ -90,7 +93,7 @@ export class UploadController {
       throw new Error(`Erro ao criar URL assinada: ${error.message}`);
     }
     await prisma.user.update({
-      where: { id: Number(id) },
+      where: { cpf: cpf },
       data: {
         fotoCnhUrl: data.signedUrl,
       },

@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
 import {
   IsEmail,
@@ -11,7 +10,6 @@ import {
 export class CreateUserDto {
   @IsEmail({}, { message: 'O email está fora do padrão' })
   email: string;
-  @ApiProperty()
   @IsString()
   name: string;
   @Matches(process.env.REGEX_CPF)
@@ -26,5 +24,5 @@ export class CreateUserDto {
   fotoCnhUrl: string;
   fotoPerfilUrl: string;
   role: Role;
-  celular: string;
+  celular: number;
 }
