@@ -24,5 +24,5 @@ export class CreateUserDto {
   fotoCnhUrl: string;
   fotoPerfilUrl: string;
   role: Role;
-  celular: number;
+  phone?: number;
 }

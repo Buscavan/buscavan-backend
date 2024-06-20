@@ -37,7 +37,8 @@ export class VeiculoController {
   @Put(':id')
   updateVeiculo(
     @Param('id') id: number,
-    @Body() data: { placa?: string; capacidade?: number; motoristaId?: number },
+    @Body()
+    data: { placa?: string; capacidade?: number; motoristaCPF?: string },
   ) {
     return this.veiculosService.updateVeiculo(id, data);
   }

@@ -37,7 +37,7 @@ export class VeiculoService {
   }
   async findAllbyMotoristaId(idMotorista: string) {
     const veiculos = await prisma.veiculo.findMany({
-      where: { motoristaId: parseInt(idMotorista) },
+      where: { motoristaCPF: idMotorista },
     });
     return veiculos;
   }
