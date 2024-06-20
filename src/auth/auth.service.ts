@@ -35,7 +35,7 @@ export class AuthService {
     }
 
     const payload = {
-      sub: foundUser.id,
+      sub: foundUser.cpf,
       name: foundUser.name,
       role: foundUser.role,
     };
@@ -64,7 +64,7 @@ export class AuthService {
 
     const user = await prisma.user.create({ data: dto });
 
-    const payload = { sub: user.id, name: user.name, role: user.role };
+    const payload = { sub: user.cpf, name: user.name, role: user.role };
 
     const token = this.jwtService.sign(payload);
 

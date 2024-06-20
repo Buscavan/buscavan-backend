@@ -9,16 +9,13 @@ import {
 } from 'class-validator';
 
 export class CreateUserDto {
-  @ApiProperty()
   @IsEmail({}, { message: 'O email está fora do padrão' })
   email: string;
   @ApiProperty()
   @IsString()
   name: string;
-  @ApiProperty()
   @Matches(process.env.REGEX_CPF)
   cpf: string;
-  @ApiProperty()
   @MinLength(5, {
     message: 'A senha é muito curta',
   })

@@ -3,11 +3,11 @@ export class AuthResponseDto {
   token: string;
   expiresIn: number;
   user: {
-    id: number;
+    cpf: string;
     email: string;
     name: string;
     password: string;
-    cpf: string;
+    phone?: number;
     createdAt: Date;
     updatedAt: Date;
   };

@@ -8,12 +8,11 @@ datasource db {
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
+  cpf           String    @unique @id
   email         String    @unique
   name          String
   password      String
-  cpf           String    @unique
-  celular       String    @unique
+  phone       Int?    @unique
   fotoPerfilUrl String?   @unique
   fotoCnhUrl    String?   @unique
   createdAt     DateTime  @default(now())
@@ -31,8 +30,8 @@ model Veiculo {
   fotoVeiculoUrl String?  @unique
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  motorista      User     @relation(fields: [motoristaId], references: [id])
-  motoristaId    Int
+  motorista      User     @relation(fields: [motoristaCPF], references: [cpf])
+  motoristaCPF    String
   viagens        Viagem[]
 }
 
@@ -50,8 +49,8 @@ model Viagem {
   updatedAt      DateTime @updatedAt
   veiculo        Veiculo  @relation(fields: [veiculoId], references: [id])
   veiculoId      Int
-  usuario        User     @relation(fields: [usuarioId], references: [id], name: "UserViagens")
-  usuarioId      Int
+  usuario        User     @relation(fields: [usuarioId], references: [cpf], name: "UserViagens")
+  usuarioId      String
   comentario     Comment? @relation(fields: [comentarioId], references: [id], name: "ViagemComment")
   comentarioId   Int?
 }
