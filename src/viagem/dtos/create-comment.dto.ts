@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateCommentDto {
@@ -8,6 +9,7 @@ export class CreateCommentDto {
   @IsString()
   author: string;
   @IsDate()
+  @Type(() => Date)
   createdAt: Date;
   @IsNumber()
   @IsOptional()

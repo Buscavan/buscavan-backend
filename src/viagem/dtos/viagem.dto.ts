@@ -26,8 +26,10 @@ export class ViagemDto {
   @Type(() => LocalDto)
   destino: LocalDto;
   @IsDate()
+  @Type(() => Date)
   dataInicial: Date;
   @IsDate()
+  @Type(() => Date)
   dataFinal: Date;
   @IsString()
   localEmbarqueIda: string;
@@ -36,6 +38,7 @@ export class ViagemDto {
   @IsNumber()
   valor: number;
   @IsDate()
+  @Type(() => Date)
   createdAt: Date;
   @IsString()
   @IsOptional()

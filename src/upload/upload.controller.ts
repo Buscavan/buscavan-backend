@@ -37,7 +37,7 @@ export class UploadController {
 
     while (true) {
       uuid = uuidv4();
-      uniqueFilename = `${uuid}-${'perfil'}`;
+      uniqueFilename = `${uuid}-perfil'`;
 
       const existingFile = await prisma.user.findUnique({
         where: { fotoPerfilUrl: uniqueFilename },

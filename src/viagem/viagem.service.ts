@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { ViagemDto } from './dtos/viagem.dto';
 import { UploadService } from 'src/upload/upload.service';
 import { CidadesService } from 'src/cidades/cidades.service';
 import { CreateCommentDto } from './dtos/create-comment.dto';
 import { createClient } from '@supabase/supabase-js';
+import { JwtService } from '@nestjs/jwt';
+import { FileDTO } from 'src/upload/dtos/upload.dto';
 
 const prisma = new PrismaClient();
 
@@ -15,6 +17,7 @@ export class ViagemService {
   constructor(
     private readonly uploadService: UploadService,
     private readonly cidadesService: CidadesService,
+    private readonly jwtService: JwtService,
   ) {
     const supabaseURL = process.env.SUPABASE_URL;
     const supabaseKEY = process.env.SUPABASE_KEY;
@@ -23,8 +26,29 @@ export class ViagemService {
     });
   }
 
-  async createViagem(dto: ViagemDto, file: Express.Multer.File) {
+  private extractTokenFromHeader(request: any): string | null {
+    const authHeader = request.headers.authorization;
+    if (!authHeader) {
+      return null;
+    }
+    const [, token] = authHeader.split(' ');
+    return token;
+  }
+
+  async createViagem(dto: ViagemDto, file: FileDTO, request: any) {
     try {
+      const token = this.extractTokenFromHeader(request);
+      if (!token) {
+        throw new UnauthorizedException('Token not found');
+      }
+
+      const payload: any = this.jwtService.decode(token);
+      if (!payload || !payload.sub) {
+        throw new UnauthorizedException('Invalid token payload');
+      }
+
+      const cpf = payload.sub;
+
       const uploadResult = await this.uploadService.upload(
         file,
         `${dto.veiculoId}-trip`,
@@ -67,7 +91,7 @@ export class ViagemService {
                 })),
               }
             : undefined,
-          usuario: { connect: { cpf: `"12312312312"` } }, // substituir pelo cpf do usuário autenticado
+          usuario: { connect: { cpf } },
         },
       });
       return viagem;

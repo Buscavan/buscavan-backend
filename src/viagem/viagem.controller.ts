@@ -6,9 +6,12 @@ import {
   Param,
   Post,
   Put,
+  Req,
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/auth/roles/roles.guard';
@@ -18,6 +21,8 @@ import { ViagemService } from './viagem.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ViagemDto } from './dtos/viagem.dto';
 import { CreateCommentDto } from './dtos/create-comment.dto';
+import { Request } from 'express';
+import { plainToInstance } from 'class-transformer';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Controller('viagem')
@@ -27,11 +32,14 @@ export class ViagemController {
   @Roles(Role.DRIVER)
   @Post('/create')
   @UseInterceptors(FileInterceptor('file'))
-  createViagem(
-    @Body() dto: ViagemDto,
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async createViagem(
+    @Body('dto') dtoString: string,
     @UploadedFile() file: Express.Multer.File,
+    @Req() request: Request,
   ) {
-    return this.viagemService.createViagem(dto, file);
+    const dto = plainToInstance(ViagemDto, JSON.parse(dtoString));
+    return this.viagemService.createViagem(dto, file, request);
   }
 
   @Roles(Role.DRIVER, Role.PASSANGER)

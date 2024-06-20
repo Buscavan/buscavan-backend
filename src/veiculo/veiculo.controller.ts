@@ -25,15 +25,17 @@ export class VeiculoController {
   createVeiculo(@Body() dto: CreateVeiculoDto) {
     return this.veiculosService.createVeiculo(dto);
   }
+  @Roles(Role.DRIVER)
   @Get(':id')
   findAllbyMotoristaId(@Param('id') id: string) {
     return this.veiculosService.findAllbyMotoristaId(id);
   }
-
+  @Roles(Role.DRIVER)
   @Delete(':id')
   deleteVeiculo(@Param('id') id: number) {
     return this.veiculosService.deleteVeiculo(id);
   }
+  @Roles(Role.DRIVER)
   @Put(':id')
   updateVeiculo(
     @Param('id') id: number,
