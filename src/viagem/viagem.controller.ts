@@ -99,4 +99,10 @@ export class ViagemController {
   ) {
     return this.viagemService.getCidadesByEstado(id, page, limit);
   }
+
+  @Roles(Role.DRIVER, Role.PASSANGER)
+  @Get('/todas')
+  getAllCidade() {
+    return this.viagemService.getViagens();
+  }
 }

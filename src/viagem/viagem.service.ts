@@ -213,6 +213,11 @@ export class ViagemService {
     }
   }
 
+  async getViagens() {
+    const viagens = prisma.viagem.findMany();
+    return viagens;
+  }
+
   async getCidades() {
     return this.cidadesService.getEstado();
   }
