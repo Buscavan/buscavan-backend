@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 
 @Injectable()
 export class UploadService {
-  async upload(file: FileDTO) {
+  async upload(file: FileDTO, name: string) {
     const supabaseURL = process.env.SUPABASE_URL;
     const supabaseKEY = process.env.SUPABASE_KEY;
 
@@ -16,7 +16,7 @@ export class UploadService {
 
     const datas = await supabase.storage
       .from('buscavan')
-      .upload(file.originalname, file.buffer, {
+      .upload(name, file.buffer, {
         upsert: true,
       });
 

@@ -10,6 +10,7 @@ import { FileDTO } from './dtos/upload.dto';
 import { UploadService } from './upload.service';
 import { createClient } from '@supabase/supabase-js';
 import { PrismaClient } from '@prisma/client';
+import { v4 as uuidv4 } from 'uuid';
 
 const prisma = new PrismaClient();
 
@@ -28,10 +29,26 @@ export class UploadController {
   @Post('/user/perfil/:id')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFileUser(@UploadedFile() file: FileDTO, @Param('id') id: number) {
-    const result = await this.uploadService.upload(file);
+    let uuid;
+    let uniqueFilename;
+
+    while (true) {
+      uuid = uuidv4();
+      uniqueFilename = `${uuid}-${'perfil'}`;
+
+      const existingFile = await prisma.user.findUnique({
+        where: { fotoPerfilUrl: uniqueFilename },
+      });
+
+      if (!existingFile) {
+        break;
+      }
+    }
+
+    const result = await this.uploadService.upload(file, uniqueFilename);
     const { data, error } = await this.supabase.storage
       .from('buscavan')
-      .createSignedUrl(file.originalname, 3155760000);
+      .createSignedUrl(uniqueFilename, 3155760000);
 
     if (error) {
       throw new Error(`Erro ao criar URL assinada: ${error.message}`);
@@ -49,10 +66,26 @@ export class UploadController {
   @Post('/user/cnh/:id')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFileCnh(@UploadedFile() file: FileDTO, @Param('id') id: number) {
-    const result = await this.uploadService.upload(file);
+    let uuid;
+    let uniqueFilename;
+
+    while (true) {
+      uuid = uuidv4();
+      uniqueFilename = `${uuid}-${'cnh'}`;
+
+      const existingFile = await prisma.user.findUnique({
+        where: { fotoPerfilUrl: uniqueFilename },
+      });
+
+      if (!existingFile) {
+        break;
+      }
+    }
+
+    const result = await this.uploadService.upload(file, uniqueFilename);
     const { data, error } = await this.supabase.storage
       .from('buscavan')
-      .createSignedUrl(file.originalname, 3155760000);
+      .createSignedUrl(uniqueFilename, 3155760000);
     if (error) {
       throw new Error(`Erro ao criar URL assinada: ${error.message}`);
     }
@@ -65,16 +98,31 @@ export class UploadController {
     return result;
   }
 
-  @Post('/viagem/:id')
+  @Post('/trip/:id')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFileViagem(
     @UploadedFile() file: FileDTO,
     @Param('id') id: number,
   ) {
-    const result = await this.uploadService.upload(file);
+    let uuid;
+    let uniqueFilename;
+
+    while (true) {
+      uuid = uuidv4();
+      uniqueFilename = `${uuid}-${'trip'}`;
+
+      const existingFile = await prisma.user.findUnique({
+        where: { fotoPerfilUrl: uniqueFilename },
+      });
+
+      if (!existingFile) {
+        break;
+      }
+    }
+    const result = await this.uploadService.upload(file, uniqueFilename);
     const { data, error } = await this.supabase.storage
       .from('buscavan')
-      .createSignedUrl(file.originalname, 3155760000);
+      .createSignedUrl(uniqueFilename, 3155760000);
 
     if (error) {
       throw new Error(`Erro ao criar URL assinada: ${error.message}`);
@@ -90,16 +138,31 @@ export class UploadController {
     return result;
   }
 
-  @Post('/veiculo/:id')
+  @Post('/vehicle/:id')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFileVeiculo(
     @UploadedFile() file: FileDTO,
     @Param('id') id: number,
   ) {
-    const result = await this.uploadService.upload(file);
+    let uuid;
+    let uniqueFilename;
+
+    while (true) {
+      uuid = uuidv4();
+      uniqueFilename = `${uuid}-${'vehicle'}`;
+
+      const existingFile = await prisma.user.findUnique({
+        where: { fotoPerfilUrl: uniqueFilename },
+      });
+
+      if (!existingFile) {
+        break;
+      }
+    }
+    const result = await this.uploadService.upload(file, uniqueFilename);
     const { data, error } = await this.supabase.storage
       .from('buscavan')
-      .createSignedUrl(file.originalname, 3155760000);
+      .createSignedUrl(uniqueFilename, 3155760000);
 
     if (error) {
       throw new Error(`Erro ao criar URL assinada: ${error.message}`);
