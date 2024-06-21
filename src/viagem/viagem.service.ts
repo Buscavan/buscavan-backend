@@ -215,7 +215,15 @@ export class ViagemService {
   async getViagens() {
     const viagens = await prisma.viagem.findMany({
       include: {
-        veiculo: true,
+        veiculo: {
+          include: {
+            motorista: {
+              select: {
+                phone: true, // Inclui apenas o campo 'phone' do usuário
+              },
+            },
+          },
+        },
         origem: true,
         destino: true,
       },
@@ -261,7 +269,15 @@ export class ViagemService {
     return prisma.viagem.findMany({
       where,
       include: {
-        veiculo: true,
+        veiculo: {
+          include: {
+            motorista: {
+              select: {
+                phone: true,
+              },
+            },
+          },
+        },
         origem: true,
         destino: true,
       },
