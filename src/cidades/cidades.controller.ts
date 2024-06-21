@@ -5,9 +5,21 @@ import { Public } from 'src/auth/public.decorator';
 @Controller('cidades')
 export class CidadesController {
   constructor(private cidadesService: CidadesService) {}
+
+  @Public()
+  @Get('/pesquisar')
+  searchCidades(
+    @Query('query') query: string,
+    @Query('limit') limit: number = 10,
+  ) {
+    console.log('ok');
+    return this.cidadesService.searchCidades(query, limit);
+  }
+
   @Public()
   @Get('/estado')
   findAllEstados() {
+    console.log('ok2');
     return this.cidadesService.getEstado();
   }
 

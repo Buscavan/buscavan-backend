@@ -46,4 +46,54 @@ export class CidadesService {
       totalPages: Math.ceil(totalCidades / limit),
     };
   }
+
+  async searchCidades(query?: string, limit: number = 10) {
+    const where: any = {};
+
+    if (query) {
+      const [cityPart, statePart] = query.split(',').map((part) => part.trim());
+
+      if (cityPart) {
+        where.nome = {
+          contains: cityPart,
+          mode: 'insensitive',
+        };
+      }
+
+      if (statePart) {
+        const state = await prisma.estado.findFirst({
+          where: {
+            nome: {
+              contains: statePart,
+              mode: 'insensitive',
+            },
+          },
+        });
+        if (state) {
+          where.uf = state.id;
+        }
+      }
+    }
+
+    if (Object.keys(where).length === 0) {
+      // No query provided, return 10 random cities
+      const totalCidades = await prisma.cidade.count();
+      const randomOffset = Math.max(
+        0,
+        Math.floor(Math.random() * (totalCidades - limit)),
+      );
+      const cidades = await prisma.cidade.findMany({
+        skip: randomOffset,
+        take: limit,
+      });
+      return cidades;
+    }
+
+    const cidades = await prisma.cidade.findMany({
+      where,
+      take: limit,
+    });
+
+    return cidades;
+  }
 }
