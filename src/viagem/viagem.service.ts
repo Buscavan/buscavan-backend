@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { ViagemDto } from './dtos/viagem.dto';
 import { UploadService } from 'src/upload/upload.service';
-import { CidadesService } from 'src/cidades/cidades.service';
 import { CreateCommentDto } from './dtos/create-comment.dto';
 import { createClient } from '@supabase/supabase-js';
 import { JwtService } from '@nestjs/jwt';
@@ -17,7 +16,6 @@ export class ViagemService {
 
   constructor(
     private readonly uploadService: UploadService,
-    private readonly cidadesService: CidadesService,
     private readonly jwtService: JwtService,
   ) {
     const supabaseURL = process.env.SUPABASE_URL;
@@ -215,12 +213,14 @@ export class ViagemService {
   }
 
   async getViagens() {
-    const viagens = prisma.viagem.findMany();
+    const viagens = await prisma.viagem.findMany({
+      include: {
+        veiculo: true,
+        origem: true,
+        destino: true,
+      },
+    });
     return viagens;
-  }
-
-  async getCidades() {
-    return this.cidadesService.getEstado();
   }
 
   async getVeiculoByPlaca(placa: string) {
@@ -233,14 +233,6 @@ export class ViagemService {
       console.error('Erro ao buscar veículo por placa:', error);
       throw error;
     }
-  }
-
-  async getEstados() {
-    return this.cidadesService.getEstado();
-  }
-
-  async getCidadesByEstado(id: string, page: number, limit: number) {
-    return this.cidadesService.getCidadesbyIdEstado(id, page, limit);
   }
 
   async getViagensByFilter(filterDto: ViagemFilterDto) {
@@ -268,6 +260,11 @@ export class ViagemService {
 
     return prisma.viagem.findMany({
       where,
+      include: {
+        veiculo: true,
+        origem: true,
+        destino: true,
+      },
     });
   }
 }

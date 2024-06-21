@@ -75,31 +75,9 @@ export class ViagemController {
   }
 
   @Roles(Role.DRIVER, Role.PASSANGER)
-  @Get('/destinos')
-  getCidades() {
-    return this.viagemService.getCidades();
-  }
-
-  @Roles(Role.DRIVER, Role.PASSANGER)
   @Get('/veiculo/:placa')
   getVeiculoByPlaca(@Param('placa') placa: string) {
     return this.viagemService.getVeiculoByPlaca(placa);
-  }
-
-  @Roles(Role.DRIVER, Role.PASSANGER)
-  @Get('/estados')
-  getEstados() {
-    return this.viagemService.getEstados();
-  }
-
-  @Roles(Role.DRIVER, Role.PASSANGER)
-  @Get('/cidades/:id')
-  getCidadesByEstado(
-    @Param('id') id: string,
-    @Param('page') page: number = 1,
-    @Param('limit') limit: number = 10,
-  ) {
-    return this.viagemService.getCidadesByEstado(id, page, limit);
   }
 
   @Roles(Role.DRIVER, Role.PASSANGER)
