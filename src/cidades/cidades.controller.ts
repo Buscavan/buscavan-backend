@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { CidadesService } from './cidades.service';
 import { Public } from 'src/auth/public.decorator';
 
@@ -10,13 +10,15 @@ export class CidadesController {
   findAllEstados() {
     return this.cidadesService.getEstado();
   }
+
   @Public()
   @Get(':id')
   findAllCidadesByUf(
     @Param('id') id: string,
-    @Param('page') page: number = 1,
-    @Param('limit') limit: number = 10,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query('nome') nome?: string,
   ) {
-    return this.cidadesService.getCidadesbyIdEstado(id, page, limit);
+    return this.cidadesService.getCidadesbyIdEstado(id, page, limit, nome);
   }
 }

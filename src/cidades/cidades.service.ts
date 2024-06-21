@@ -8,27 +8,40 @@ export class CidadesService {
     const estado = await prisma.estado.findMany();
     return estado;
   }
-  async getCidadesbyIdEstado(id: string, page: number, limit: number) {
+  async getCidadesbyIdEstado(
+    id: string,
+    page: number,
+    limit: number,
+    nome?: string,
+  ) {
     page = Number(page) || 1;
     limit = Number(limit) || 10;
 
     const skip = (page - 1) * limit;
     const take = limit;
 
+    const where: any = { uf: parseInt(id) };
+    if (nome) {
+      where.nome = {
+        contains: nome,
+        mode: 'insensitive', // This makes the search case-insensitive
+      };
+    }
+
     const cidades = await prisma.cidade.findMany({
-      where: { uf: parseInt(id) },
-      skip: skip,
-      take: take,
+      where,
+      skip,
+      take,
     });
 
     const totalCidades = await prisma.cidade.count({
-      where: { uf: parseInt(id) },
+      where,
     });
 
     return {
       data: cidades,
-      page: page,
-      limit: limit,
+      page,
+      limit,
       total: totalCidades,
       totalPages: Math.ceil(totalCidades / limit),
     };
