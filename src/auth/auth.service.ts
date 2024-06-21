@@ -137,9 +137,14 @@ export class AuthService {
       },
     );
     const newRefreshToken = await this.generateRefreshToken(userId);
+    const foundUser = await prisma.user.findUnique({
+      where: { cpf: userId },
+    });
+
     return {
       accessToken: newAccessToken,
       refreshToken: newRefreshToken,
-    };
+      user: foundUser
+    }; 
   }
 }
