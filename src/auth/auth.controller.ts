@@ -38,4 +38,11 @@ export class AuthController {
   async alterUser(@Param('cpf') cpf: string, @Body() dto: AlterUserDto) {
     return this.authService.alterUser(dto, cpf);
   }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Post('/refresh-token')
+  async refreshToken(@Body() body: { refreshToken: string }) {
+    return this.authService.refreshTokens(body.refreshToken);
+  }
 }
