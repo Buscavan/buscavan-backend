@@ -42,10 +42,10 @@ model Viagem {
   destinoId          Int
   destino            Cidade    @relation("Destino", fields: [destinoId], references: [id])
   dataInicial        DateTime
-  dataFinal          DateTime
+  dataFinal          DateTime?
   valor              Float
   localEmbarqueIda   String
-  localEmbarqueVolta String
+  localEmbarqueVolta String?
   descricao          String
   fotoDestinoUrl     String?   @unique
   createdAt          DateTime  @default(now())

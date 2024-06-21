@@ -244,27 +244,25 @@ export class ViagemService {
   }
 
   async getViagensByFilter(filterDto: ViagemFilterDto) {
-    const { origemId, destinoId, dataInicial, dataFinal } = filterDto;
-
     const where: any = {};
 
-    if (origemId) {
-      where.origemId = origemId;
+    if (filterDto.origemId) {
+      where.origemId = parseInt(filterDto.origemId as any);
     }
 
-    if (destinoId) {
-      where.destinoId = destinoId;
+    if (filterDto.destinoId) {
+      where.destinoId = parseInt(filterDto.destinoId as any);
     }
 
-    if (dataInicial) {
+    if (filterDto.dataInicial) {
       where.dataInicial = {
-        gte: new Date(dataInicial),
+        gte: new Date(filterDto.dataInicial),
       };
     }
 
-    if (dataFinal) {
+    if (filterDto.dataFinal) {
       where.dataFinal = {
-        lte: new Date(dataFinal),
+        lte: new Date(filterDto.dataInicial),
       };
     }
 

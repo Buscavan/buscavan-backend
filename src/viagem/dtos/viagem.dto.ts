@@ -1,6 +1,5 @@
 import {
   IsDate,
-  IsEnum,
   IsNumber,
   IsOptional,
   IsString,
@@ -13,11 +12,6 @@ class LocalDto {
   @IsNumber()
   id: number;
 }
-export enum TipoViagem {
-  IDA,
-  IDAVOLTA,
-}
-
 export class ViagemDto {
   @ValidateNested()
   @Type(() => LocalDto)
@@ -49,8 +43,6 @@ export class ViagemDto {
   @Type(() => CreateCommentDto)
   @IsOptional()
   comentarios?: CreateCommentDto[];
-  @IsEnum(TipoViagem)
-  tipo: TipoViagem;
   @IsOptional()
   @IsString()
   descricao?: string;
