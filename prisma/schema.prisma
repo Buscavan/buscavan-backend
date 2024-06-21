@@ -8,18 +8,28 @@ datasource db {
 }
 
 model User {
-  cpf           String    @id @unique
-  email         String    @unique
+  cpf           String         @id @unique
+  email         String         @unique
   name          String
   password      String
-  phone         Int?      @unique
-  fotoPerfilUrl String?   @unique
-  fotoCnhUrl    String?   @unique
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  phone         Int?           @unique
+  fotoPerfilUrl String?        @unique
+  fotoCnhUrl    String?        @unique
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   role          Role
   veiculos      Veiculo[]
-  viagens       Viagem[]  @relation("UserViagens")
+  viagens       Viagem[]       @relation("UserViagens")
+  refreshTokens RefreshToken[] @relation("UserRefreshTokens")
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [cpf], name: "UserRefreshTokens")
+  createdAt DateTime @default(now())
+  expiresAt DateTime
 }
 
 model Veiculo {

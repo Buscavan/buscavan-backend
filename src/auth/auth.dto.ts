@@ -2,6 +2,7 @@
 export class AuthResponseDto {
   token: string;
   expiresIn: number;
+  refreshToken: string;
   user: {
     cpf: string;
     email: string;

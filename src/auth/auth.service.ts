@@ -18,6 +18,7 @@ const prisma = new PrismaClient();
 @Injectable()
 export class AuthService {
   private jwtExpirationTimeInSec: number;
+  private jwtRefreshExpirationTimeInSec: number;
 
   constructor(
     private jwtService: JwtService,
@@ -25,6 +26,9 @@ export class AuthService {
   ) {
     this.jwtExpirationTimeInSec = +this.configService.get<number>(
       'JWT_EXPIRATION_TIME',
+    );
+    this.jwtRefreshExpirationTimeInSec = +this.configService.get<number>(
+      'JWT_REFRESH_EXPIRATION_TIME',
     );
   }
 
@@ -47,8 +51,9 @@ export class AuthService {
     };
 
     const token = this.jwtService.sign(payload);
+    const refreshToken = await this.generateRefreshToken(foundUser.cpf)
 
-    return { token, expiresIn: this.jwtExpirationTimeInSec, user: foundUser };
+    return { token, expiresIn: this.jwtExpirationTimeInSec, refreshToken, user: foundUser };
   }
 
   async createUser(dto: CreateUserDto): Promise<CreateUserDto> {
@@ -73,10 +78,11 @@ export class AuthService {
     const payload = { sub: user.cpf, name: user.name, role: user.role };
 
     const token = this.jwtService.sign(payload);
+    const refreshToken = await this.generateRefreshToken(user.cpf);
 
     const expiresin = this.jwtExpirationTimeInSec;
 
-    const dtoUser = { token, expiresin, ...user };
+    const dtoUser = { token, expiresin, refreshToken, ...user };
 
     return dtoUser;
   }
@@ -93,5 +99,47 @@ export class AuthService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+  private async generateRefreshToken(userId: string): Promise<string> {
+    const refreshToken = this.jwtService.sign(
+      { sub: userId },
+      { 
+        secret: this.configService.get('JWT_REFRESH_SECRET'),
+        expiresIn: `${this.jwtRefreshExpirationTimeInSec}`,
+      },
+    );
+    await prisma.refreshToken.create({
+      data: {
+        token: refreshToken,
+        userId: userId,
+        expiresAt: new Date(Date.now() + this.jwtRefreshExpirationTimeInSec * 1000),
+      },
+    });
+    return refreshToken;
+  }
+  async refreshTokens(refreshToken: string) {
+    const tokenData = await prisma.refreshToken.findUnique({
+      where: { token: refreshToken },
+    });
+    if(!tokenData) {
+      throw new UnauthorizedException('Refresh Token Inválido!')
+    }
+    if(tokenData.expiresAt < new Date()) {
+      throw new UnauthorizedException('Refresh Token Expirado.')
+    }
+    const userId = tokenData.userId;
+    await prisma.refreshToken.delete({ where: { token: refreshToken} });
+    const newAccessToken = this.jwtService.sign(
+      { sub: userId },
+      {
+        secret: this.configService.get('JWT_SECRET'),
+        expiresIn: `${this.jwtExpirationTimeInSec}`,
+      },
+    );
+    const newRefreshToken = await this.generateRefreshToken(userId);
+    return {
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+    };
   }
 }
