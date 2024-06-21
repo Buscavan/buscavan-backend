@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
@@ -23,6 +24,7 @@ import { ViagemDto } from './dtos/viagem.dto';
 import { CreateCommentDto } from './dtos/create-comment.dto';
 import { Request } from 'express';
 import { plainToInstance } from 'class-transformer';
+import { ViagemFilterDto } from './dtos/viagem-filter.dto';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Controller('viagem')
@@ -43,7 +45,7 @@ export class ViagemController {
   }
 
   @Roles(Role.DRIVER, Role.PASSANGER)
-  @Get(':id')
+  @Get('/unico/:id')
   findViagemById(@Param('id') id: number) {
     return this.viagemService.findViagemById(id);
   }
@@ -55,7 +57,7 @@ export class ViagemController {
   }
 
   @Roles(Role.DRIVER)
-  @Delete(':id')
+  @Delete('/delete/:id')
   deleteViagem(@Param('id') id: number) {
     return this.viagemService.deleteViagem(id);
   }
@@ -104,5 +106,11 @@ export class ViagemController {
   @Get('/todas')
   getAllCidade() {
     return this.viagemService.getViagens();
+  }
+
+  @Roles(Role.DRIVER, Role.PASSANGER)
+  @Get('/filter')
+  async getViagens(@Query() filterDto: ViagemFilterDto) {
+    return this.viagemService.getViagensByFilter(filterDto);
   }
 }
