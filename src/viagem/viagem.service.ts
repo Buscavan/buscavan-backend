@@ -7,6 +7,7 @@ import { CreateCommentDto } from './dtos/create-comment.dto';
 import { createClient } from '@supabase/supabase-js';
 import { JwtService } from '@nestjs/jwt';
 import { FileDTO } from 'src/upload/dtos/upload.dto';
+import { ViagemFilterDto } from './dtos/viagem-filter.dto';
 
 const prisma = new PrismaClient();
 
@@ -240,5 +241,35 @@ export class ViagemService {
 
   async getCidadesByEstado(id: string, page: number, limit: number) {
     return this.cidadesService.getCidadesbyIdEstado(id, page, limit);
+  }
+
+  async getViagensByFilter(filterDto: ViagemFilterDto) {
+    const { origemId, destinoId, dataInicial, dataFinal } = filterDto;
+
+    const where: any = {};
+
+    if (origemId) {
+      where.origemId = origemId;
+    }
+
+    if (destinoId) {
+      where.destinoId = destinoId;
+    }
+
+    if (dataInicial) {
+      where.dataInicial = {
+        gte: new Date(dataInicial),
+      };
+    }
+
+    if (dataFinal) {
+      where.dataFinal = {
+        lte: new Date(dataFinal),
+      };
+    }
+
+    return prisma.viagem.findMany({
+      where,
+    });
   }
 }
