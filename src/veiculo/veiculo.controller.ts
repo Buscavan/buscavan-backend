@@ -6,7 +6,11 @@ import {
   Param,
   Post,
   Put,
+  Req,
+  UploadedFile,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { VeiculoService } from './veiculo.service';
 import { CreateVeiculoDto } from './dtos/create-veiculo.dto';
@@ -22,8 +26,13 @@ export class VeiculoController {
 
   @Roles(Role.DRIVER)
   @Post('/create')
-  createVeiculo(@Body() dto: CreateVeiculoDto) {
-    return this.veiculosService.createVeiculo(dto);
+  @UsePipes(new ValidationPipe({ transform: true }))
+  createVeiculo(
+    @Body() dtoString: CreateVeiculoDto,
+    @UploadedFile() file: Express.Multer.File,
+    @Req() request: Request,
+  ) {
+    return this.veiculosService.createVeiculo(dtoString, file, request);
   }
   @Roles(Role.DRIVER)
   @Get(':id')
