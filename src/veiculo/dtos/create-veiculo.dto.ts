@@ -6,7 +6,5 @@ export class CreateVeiculoDto {
   @IsNumber()
   capacidade: number;
   @IsString()
-  motoristaCPF: string;
-  @IsString()
   modelo: string;
 }
