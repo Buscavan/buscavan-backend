@@ -11,6 +11,7 @@ import {
   UseGuards,
   UsePipes,
   ValidationPipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { VeiculoService } from './veiculo.service';
 import { CreateVeiculoDto } from './dtos/create-veiculo.dto';
@@ -18,6 +19,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/auth/roles/roles.guard';
 import { Roles } from 'src/auth/roles/roles.decorator';
 import { Role } from '@prisma/client';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @UseGuards(AuthGuard, RolesGuard)
 @Controller('veiculo')
@@ -26,14 +28,17 @@ export class VeiculoController {
 
   @Roles(Role.DRIVER)
   @Post('/create')
+  @UseInterceptors(FileInterceptor('file'))
   @UsePipes(new ValidationPipe({ transform: true }))
-  createVeiculo(
-    @Body() dtoString: CreateVeiculoDto,
+  async createVeiculo(
+    @Body('dtoString') dtoString: string,
     @UploadedFile() file: Express.Multer.File,
     @Req() request: Request,
   ) {
-    return this.veiculosService.createVeiculo(dtoString, file, request);
+    const createVeiculoDto: CreateVeiculoDto = JSON.parse(dtoString);
+    return this.veiculosService.createVeiculo(createVeiculoDto, file, request);
   }
+
   @Roles(Role.DRIVER)
   @Get(':id')
   findAllbyMotoristaId(@Param('id') id: string) {
