@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -36,12 +37,20 @@ export class ViagemController {
   @UseInterceptors(FileInterceptor('file'))
   @UsePipes(new ValidationPipe({ transform: true }))
   async createViagem(
-    @Body('dto') dtoString: string,
+    @Body('dtoString') dtoString: string, // Change dto to dtoString
     @UploadedFile() file: Express.Multer.File,
     @Req() request: Request,
   ) {
-    const dto = plainToInstance(ViagemDto, JSON.parse(dtoString));
-    return this.viagemService.createViagem(dto, file, request);
+    try {
+      const dto = plainToInstance(ViagemDto, JSON.parse(dtoString));
+      dto.origemId = dto.origemId && parseInt(dto.origemId.toString());
+      dto.destinoId = dto.destinoId && parseInt(dto.destinoId.toString());
+
+      return this.viagemService.createViagem(dto, file, request);
+    } catch (error) {
+      console.error('Error parsing JSON:', error);
+      throw new BadRequestException('Invalid JSON');
+    }
   }
 
   @Roles(Role.DRIVER, Role.PASSANGER)

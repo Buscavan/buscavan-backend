@@ -99,7 +99,7 @@ export class VeiculoService {
   async deleteVeiculo(id: number) {
     const veiculo = await prisma.veiculo.delete({
       where: {
-        id: id,
+        id: parseInt(id.toString()),
       },
     });
     return veiculo;

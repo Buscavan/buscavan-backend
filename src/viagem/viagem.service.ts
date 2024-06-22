@@ -67,11 +67,11 @@ export class ViagemService {
 
       const viagem = await prisma.viagem.create({
         data: {
-          origem: { connect: { id: dto.origem.id } },
-          destino: { connect: { id: dto.destino.id } },
+          origem: { connect: { id: parseInt(dto.origemId.toString()) } },
+          destino: { connect: { id: parseInt(dto.destinoId.toString()) } },
           dataInicial: dto.dataInicial,
           dataFinal: dto.dataFinal,
-          valor: dto.valor,
+          valor: parseInt(dto.valor.toString()),
           localEmbarqueIda: dto.localEmbarqueIda,
           localEmbarqueVolta: dto.localEmbarqueVolta,
           fotoDestinoUrl: signedUrl,
@@ -121,9 +121,11 @@ export class ViagemService {
           id: id,
         },
         data: {
-          origem: data.origem ? { connect: { id: data.origem.id } } : undefined,
-          destino: data.destino
-            ? { connect: { id: data.destino.id } }
+          origem: data.origemId
+            ? { connect: { id: data.origemId } }
+            : undefined,
+          destino: data.destinoId
+            ? { connect: { id: data.destinoId } }
             : undefined,
           veiculo: data.veiculoId
             ? { connect: { id: data.veiculoId } }
@@ -182,7 +184,7 @@ export class ViagemService {
   async findViagemById(id: number) {
     try {
       const viagem = await prisma.viagem.findUnique({
-        where: { id },
+        where: { id: parseInt(id.toString()) },
         include: { comentarios: true, veiculo: true },
       });
       return viagem;

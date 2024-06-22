@@ -13,12 +13,16 @@ class LocalDto {
   id: number;
 }
 export class ViagemDto {
-  @ValidateNested()
-  @Type(() => LocalDto)
-  origem: LocalDto;
-  @ValidateNested()
-  @Type(() => LocalDto)
-  destino: LocalDto;
+  // @ValidateNested()
+  // @Type(() => LocalDto)
+  // origem: LocalDto;
+  // @ValidateNested()
+  // @Type(() => LocalDto)
+  // destino: LocalDto;
+  @IsNumber()
+  origemId: number;
+  @IsNumber()
+  destinoId: number;
   @IsDate()
   @Type(() => Date)
   dataInicial: Date;
