@@ -124,4 +124,16 @@ export class VeiculoService {
     });
     return veiculos;
   }
+  async findVehicleByDriverIdAndVehicleId(
+    motoristaCPF: string,
+    vehicleId: number,
+  ) {
+    const veiculo = await prisma.veiculo.findFirst({
+      where: {
+        id: parseInt(vehicleId.toString()),
+        motoristaCPF: motoristaCPF,
+      },
+    });
+    return veiculo;
+  }
 }

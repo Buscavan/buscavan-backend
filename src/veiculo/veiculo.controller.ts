@@ -50,6 +50,17 @@ export class VeiculoController {
     return this.veiculosService.deleteVeiculo(id);
   }
   @Roles(Role.DRIVER)
+  @Get(':motoristaCPF/informacao/:vehicleId')
+  async findVehicleByDriverIdAndVehicleId(
+    @Param('motoristaCPF') motoristaCPF: string,
+    @Param('vehicleId') vehicleId: number,
+  ) {
+    return this.veiculosService.findVehicleByDriverIdAndVehicleId(
+      motoristaCPF,
+      vehicleId,
+    );
+  }
+  @Roles(Role.DRIVER)
   @Put(':id')
   updateVeiculo(
     @Param('id') id: number,
