@@ -22,5 +22,5 @@ export class AlterUserDto {
   //   message: 'A senha é muito longa',
   // })
   // password: string;
-  phone: string;
+  phone: number;
 }
